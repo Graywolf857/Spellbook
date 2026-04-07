@@ -26,12 +26,14 @@ public class Main{
 			if(Objects.equals(input, "help")){
 				print("'new' to create a new wizard and start a new book");
 				print("'add' to add a new spell");
-				print("'cast + spell' to cast a spell");
+				print("'cast' + spell' to cast a spell");
 				print("'q'   to quit");
 
 			}else if(Objects.equals(input, "q")){
 
 				programOn = false;
+				
+				clearScreen();
 
 			}else if(Objects.equals(input, "new")){
 				Wizard wizard = new Wizard();
