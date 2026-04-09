@@ -5,12 +5,22 @@ import java.util.Objects;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.util.LinkedList;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.File;
+
 
 public class Main{
 	public static void main(String[] args){
 		boolean programOn = true;
 
-		Wizard grayson = new Wizard();
+		clearScreen();
+
+		print("Loading saves");
+
+		Wizard mainWizard = readFromSave();
+
+		//Wizard grayson = new Wizard();
+
 
 		Scanner scanner = new Scanner(System.in);
 
@@ -43,26 +53,27 @@ public class Main{
 				clearScreen();
 
 			}else if(Objects.equals(input, "new")){
-				Wizard wizard = new Wizard();
 				print("What is your wizard's name?");
 
 				String name = scanner.nextLine();
 
-				wizard.setName(name);
+				mainWizard.setName(name);
 
 				print("What is his level?");
 
 				int level = scanner.nextInt();
 
-				wizard.setLevel(level);
+				mainWizard.setLevel(level);
 
 				print("What is his starting health?");
 
 				int health = scanner.nextInt();
 
-				wizard.setHealth(health);
+				mainWizard.setHealth(health);
 
-				print("You have successfully created your wizard " + wizard.getName() + " level " + wizard.getLevel());
+				print("You have successfully created your wizard " + mainWizard.getName() + " level " + mainWizard.getLevel());
+
+				mainWizard.saveWizardToFile(mainWizard);
 
 				waitForEnter();
 				clearScreen();
@@ -111,8 +122,10 @@ public class Main{
 				spell.setDamage(damage);
 				spell.setPrepared(preped);
 
-				grayson.addSpellToList(spell);
+				mainWizard.addSpellToList(spell);
 				print("You have successfully added " + spell.getName() + " to your spellbook");
+
+				mainWizard.saveWizardToFile(mainWizard);
 
 				waitForEnter();
 				clearScreen();
@@ -121,7 +134,7 @@ public class Main{
 
 				String name = scanner.nextLine();
 
-				Spell spell = grayson.getSpellFromName(name);
+				Spell spell = mainWizard.getSpellFromName(name);
 
 				if(Objects.equals(spell.getName(),"error")){
 					print("This spell is not on your list");
@@ -133,7 +146,7 @@ public class Main{
 				waitForEnter();
 				clearScreen();
 			}else if(Objects.equals(input, "attack")){
-				LinkedList<Spell> spellList = grayson.getSpellList();
+				LinkedList<Spell> spellList = mainWizard.getSpellList();
 
 				clearScreen();
 
@@ -166,5 +179,16 @@ public class Main{
 		scanner.nextLine();
 	}
 
-	
+	public static Wizard readFromSave(){
+		ObjectMapper objectMapper = new ObjectMapper();
+
+		Wizard wizard = new Wizard();
+
+		try{
+			wizard = objectMapper.readValue(new File("src/main/resources/wizard.json"), Wizard.class);
+		}catch( Exception e){
+			print("You have no previous save");
+		}
+		return wizard;
+	}
 }
