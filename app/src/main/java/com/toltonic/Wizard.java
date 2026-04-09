@@ -98,6 +98,9 @@ public class Wizard{
 		spellList.remove(spell);
 	}
 
+	public void clearSpellList(){
+		this.spellList.clear();
+	}
 
 	public void saveWizardToFile(Wizard wizard){
 		ObjectMapper objectMapper = new ObjectMapper();

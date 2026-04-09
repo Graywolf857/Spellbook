@@ -41,10 +41,14 @@ public class Main{
 			if(Objects.equals(input, "help")){
 				print("'new' to create a new wizard and start a new book");
 				print("'add' to add a new spell");
+				print("'book' to print all of the spells in your spell book");
 				print("'search' to search for a spell by name");
 				print("'attack' to see a list of prepared spells that you can cast");
 				print("'cast' + spell' to cast a spell");
+				print("'remove' to remove a spell");
+				print("'rest' to rest");
 				print("'q'   to quit");
+				
 
 			}else if(Objects.equals(input, "q")){
 
@@ -53,27 +57,41 @@ public class Main{
 				clearScreen();
 
 			}else if(Objects.equals(input, "new")){
-				print("What is your wizard's name?");
+				print("Are you sure you want to make a new wizard?\nThis will delete your old save file! (y/n)");
 
-				String name = scanner.nextLine();
+				String yon = scanner.nextLine();
 
-				mainWizard.setName(name);
+				if(Objects.equals(yon, "y")){
 
-				print("What is his level?");
+					mainWizard.clearSpellList();
 
-				int level = scanner.nextInt();
+					print("What is your new wizard's name?");
 
-				mainWizard.setLevel(level);
+					String name = scanner.nextLine();
 
-				print("What is his starting health?");
+					mainWizard.setName(name);
 
-				int health = scanner.nextInt();
+					print("What is his level?");
 
-				mainWizard.setHealth(health);
+					int level = scanner.nextInt();
 
-				print("You have successfully created your wizard " + mainWizard.getName() + " level " + mainWizard.getLevel());
+					mainWizard.setLevel(level);
 
-				mainWizard.saveWizardToFile(mainWizard);
+					print("What is his starting health?");
+
+					int health = scanner.nextInt();
+
+					mainWizard.setHealth(health);
+
+					print("You have successfully created your wizard " + mainWizard.getName() + " level " + mainWizard.getLevel());
+
+					mainWizard.saveWizardToFile(mainWizard);
+				}else{
+					print("I guess this guy has some sentimental value");
+					print("If you want to have mutiple saves, you can copy and paste the wizard.json file into another place and hot swap them");
+				}
+
+				
 
 				waitForEnter();
 				clearScreen();
@@ -158,6 +176,48 @@ public class Main{
 					}
 				}
 
+			}else if(Objects.equals(input, "remove")){
+				print("What spell would you like to remove?");
+
+				String spellName = scanner.nextLine();
+
+				Spell spell = mainWizard.getSpellFromName(spellName);
+
+				mainWizard.removeSpellFromList(spell);
+
+				print("Removed " + spell.getName() + " from your book");
+
+				mainWizard.saveWizardToFile(mainWizard);
+
+				waitForEnter();
+				clearScreen();
+			}else if(Objects.equals(input, "book")){
+				LinkedList<Spell> spellList = mainWizard.getSpellList();
+
+				clearScreen();
+
+				print("Here are all your spells");
+
+				for(Spell spell : spellList){
+					System.out.println(spell.getName() + "\nDamage: " + spell.getDamage() + " Prepared: " + spell.getPrepared());
+				}
+			}else if(Objects.equals(input, "rest")){
+				LinkedList<Spell> spellList = mainWizard.getSpellList();
+
+				clearScreen();
+
+				for(Spell spell : spellList){
+					if(spell.getPrepared() == true){
+						spell.setPrepared(false);
+					}
+				}
+
+				print("You have rested and your health has been reset");
+
+				mainWizard.saveWizardToFile(mainWizard);
+
+				waitForEnter();
+				clearScreen();
 			}
 
 		}
