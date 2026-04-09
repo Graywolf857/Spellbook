@@ -47,6 +47,7 @@ public class Wizard{
 	public LinkedList<Spell> getSpellList(){
 		return this.spellList;
 	}
+
 	public Spell getSpellFromName(String name){
 		Spell brick = new Spell();
 		brick.setName("error");

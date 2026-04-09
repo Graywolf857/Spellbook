@@ -16,10 +16,12 @@ public class Main{
 
 		clearScreen();
 
+		print("Welcome to your spellbook");
+
 		while(programOn){
 
 
-			print("Welcome to your spellbook\nWhat would you like to do? (Type 'help' to see options, and 'q' to quit.)");
+			print("What would you like to do? (Type 'help' to see options, and 'q' to quit.)");
 
 			String input = scanner.next();
 
@@ -30,6 +32,7 @@ public class Main{
 				print("'new' to create a new wizard and start a new book");
 				print("'add' to add a new spell");
 				print("'search' to search for a spell by name");
+				print("'attack' to see a list of prepared spells that you can cast");
 				print("'cast' + spell' to cast a spell");
 				print("'q'   to quit");
 
@@ -88,28 +91,28 @@ public class Main{
 
 			}else if(Objects.equals(input, "add")){
 
-				boolean reqPrep = true;
+				boolean preped = true;
 
 				print("What is the name of your spell?");
 				String name = scanner.nextLine();
 				print("How much damage does it do?");
 				int damage = scanner.nextInt();
-				print("Does it require prep? (y/n)");
+				print("Do you want to prepare the spell now? (y/n)");
 				String prep = scanner.next();
 				if(Objects.equals(prep, "y")){
-					 reqPrep = true;
+					 preped = true;
 				}else{
-					 reqPrep = false;
+					 preped = false;
 				}
 
 				Spell spell = new Spell();
 
 				spell.setName(name);
 				spell.setDamage(damage);
-				spell.setRequiresPrep(reqPrep);
+				spell.setPrepared(preped);
 
 				grayson.addSpellToList(spell);
-				print(spell.getName());
+				print("You have successfully added " + spell.getName() + " to your spellbook");
 
 				waitForEnter();
 				clearScreen();
@@ -129,6 +132,19 @@ public class Main{
 
 				waitForEnter();
 				clearScreen();
+			}else if(Objects.equals(input, "attack")){
+				LinkedList<Spell> spellList = grayson.getSpellList();
+
+				clearScreen();
+
+				print("Here is a list of your prepared spells:");
+
+				for(Spell spell : spellList){
+					if(spell.getPrepared() == true){
+						System.out.println(spell.getName());
+					}
+				}
+
 			}
 
 		}
