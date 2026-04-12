@@ -10,245 +10,254 @@ import java.io.File;
 
 
 public class Main{
-	public static void main(String[] args){
-		boolean programOn = true;
+    public static void main(String[] args){
+        boolean programOn = true;
 
-		clearScreen();
+        clearScreen();
 
-		print("Loading saves");
+        print("Loading saves");
+        
 
-		Wizard mainWizard = readFromSave();
+        Wizard mainWizard = readFromSave();
 
-		//Wizard grayson = new Wizard();
+        //Wizard grayson = new Wizard();
 
 
-		Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
 
-		clearScreen();
+        clearScreen();
 
-		print("Welcome to your spellbook");
+        print("Welcome to your spellbook");
 
-		while(programOn){
+        while(programOn){
 
+            mainWizard = readFromSave();
 
-			print("What would you like to do? (Type 'help' to see options, and 'q' to quit.)");
+            print("What would you like to do? (Type 'help' to see options, and 'q' to quit.)");
 
-			String input = scanner.next();
+            String input = scanner.next();
 
-			// To make sure it doesn't skip the next nextLines
-			scanner.nextLine();
+            // To make sure it doesn't skip the next nextLines
+            scanner.nextLine();
 
-			if(Objects.equals(input, "help")){
-				print("'new' to create a new wizard and start a new book");
-				print("'add' to add a new spell");
-				print("'book' to print all of the spells in your spell book");
-				print("'search' to search for a spell by name");
-				print("'attack' to see a list of prepared spells that you can cast");
-				print("'cast' + spell' to cast a spell");
-				print("'remove' to remove a spell");
-				print("'rest' to rest");
-				print("'q'   to quit");
-				
+            if(Objects.equals(input, "help")){
+                print("'new' to create a new wizard and start a new book");
+                print("'add' to add a new spell");
+                print("'book' to print all of the spells in your spell book");
+                print("'search' to search for a spell by name");
+                print("'attack' to see a list of prepared spells that you can cast");
+                print("'cast' + spell' to cast a spell");
+                print("'remove' to remove a spell");
+                print("'rest' to rest");
+                print("'q'   to quit");
 
-			}else if(Objects.equals(input, "q")){
 
-				programOn = false;
-				
-				clearScreen();
+            }else if(Objects.equals(input, "q")){
 
-			}else if(Objects.equals(input, "new")){
-				print("Are you sure you want to make a new wizard?\nThis will delete your old save file! (y/n)");
+                programOn = false;
 
-				String yon = scanner.nextLine();
+                clearScreen();
 
-				if(Objects.equals(yon, "y")){
+            }else if(Objects.equals(input, "new")){
+                print("Are you sure you want to make a new wizard?\nThis will delete your old save file! (y/n)");
 
-					mainWizard.clearSpellList();
+                String yon = scanner.nextLine();
 
-					print("What is your new wizard's name?");
+                if(Objects.equals(yon, "y")){
 
-					String name = scanner.nextLine();
+                    File file = new File("src/main/resources/wizard.json");
 
-					mainWizard.setName(name);
+                    if(file.exists()){
+                        file.delete();
+                    }
 
-					print("What is his level?");
+                    Wizard blank = new Wizard();
 
-					int level = scanner.nextInt();
+                    print("What is your new wizard's name?");
 
-					mainWizard.setLevel(level);
+                    String name = scanner.nextLine();
 
-					print("What is his starting health?");
+                    blank.setName(name);
 
-					int health = scanner.nextInt();
+                    print("What is his level?");
 
-					mainWizard.setHealth(health);
+                    int level = scanner.nextInt();
 
-					print("You have successfully created your wizard " + mainWizard.getName() + " level " + mainWizard.getLevel());
+                    blank.setLevel(level);
 
-					mainWizard.saveWizardToFile(mainWizard);
-				}else{
-					print("I guess this guy has some sentimental value");
-					print("If you want to have mutiple saves, you can copy and paste the wizard.json file into another place and hot swap them");
-				}
+                    print("What is his starting health?");
 
-				
+                    int health = scanner.nextInt();
 
-				waitForEnter();
-				clearScreen();
-			}else if(Objects.equals(input, "test")){
-				Wizard wizard = new Wizard();
+                    blank.setHealth(health);
 
-				Spell magicMissile = new Spell();
+                    print("You have successfully created your wizard " + blank.getName() + " level " + blank.getLevel());
 
-				magicMissile.setName("Magic Missile");
+                    blank.saveWizardToFile(blank);
 
-				print(magicMissile.getName());
+                }else{
+                    print("I guess this guy has some sentimental value");
+                    print("If you want to have mutiple saves, you can copy and paste the wizard.json file into another place and hot swap them");
+                }
 
-				wizard.addSpellToList(magicMissile);
 
-				LinkedList<Spell> spellList = wizard.getSpellList();
 
-				Spell spell = spellList.get(0);
+                waitForEnter();
+                clearScreen();
+            }else if(Objects.equals(input, "test")){
+                Wizard wizard = new Wizard();
 
-				print(spell.getName());
+                Spell magicMissile = new Spell();
 
-				String spellRequestName = scanner.nextLine();
+                magicMissile.setName("Magic Missile");
 
-				Spell lit = wizard.getSpellFromName(spellRequestName);
+                print(magicMissile.getName());
 
-				print(lit.getName());
+                wizard.addSpellToList(magicMissile);
 
-			}else if(Objects.equals(input, "add")){
+                LinkedList<Spell> spellList = wizard.getSpellList();
 
-				boolean preped = true;
+                Spell spell = spellList.get(0);
 
-				print("What is the name of your spell?");
-				String name = scanner.nextLine();
-				print("How much damage does it do?");
-				int damage = scanner.nextInt();
-				print("Do you want to prepare the spell now? (y/n)");
-				String prep = scanner.next();
-				if(Objects.equals(prep, "y")){
-					 preped = true;
-				}else{
-					 preped = false;
-				}
+                print(spell.getName());
 
-				Spell spell = new Spell();
+                String spellRequestName = scanner.nextLine();
 
-				spell.setName(name);
-				spell.setDamage(damage);
-				spell.setPrepared(preped);
+                Spell lit = wizard.getSpellFromName(spellRequestName);
 
-				mainWizard.addSpellToList(spell);
-				print("You have successfully added " + spell.getName() + " to your spellbook");
+                print(lit.getName());
 
-				mainWizard.saveWizardToFile(mainWizard);
+            }else if(Objects.equals(input, "add")){
 
-				waitForEnter();
-				clearScreen();
-			}else if(Objects.equals(input, "search")){
-				print("What is the name of the spell you would like to search for?");
+                boolean preped = true;
 
-				String name = scanner.nextLine();
+                print("What is the name of your spell?");
+                String name = scanner.nextLine();
+                print("How much damage does it do?");
+                int damage = scanner.nextInt();
+                print("Do you want to prepare the spell now? (y/n)");
+                String prep = scanner.next();
+                if(Objects.equals(prep, "y")){
+                    preped = true;
+                }else{
+                    preped = false;
+                }
 
-				Spell spell = mainWizard.getSpellFromName(name);
+                Spell spell = new Spell();
 
-				if(Objects.equals(spell.getName(),"error")){
-					print("This spell is not on your list");
-				}else{
+                spell.setName(name);
+                spell.setDamage(damage);
+                spell.setPrepared(preped);
 
-					print(spell.getName() + " is in your database and has a damage of " + spell.getDamage());
-				}
+                mainWizard.addSpellToList(spell);
+                print("You have successfully added " + spell.getName() + " to your spellbook");
 
-				waitForEnter();
-				clearScreen();
-			}else if(Objects.equals(input, "attack")){
-				LinkedList<Spell> spellList = mainWizard.getSpellList();
+                mainWizard.saveWizardToFile(mainWizard);
 
-				clearScreen();
+                waitForEnter();
+                clearScreen();
+            }else if(Objects.equals(input, "search")){
+                print("What is the name of the spell you would like to search for?");
 
-				print("Here is a list of your prepared spells:");
+                String name = scanner.nextLine();
 
-				for(Spell spell : spellList){
-					if(spell.getPrepared() == true){
-						System.out.println(spell.getName());
-					}
-				}
+                Spell spell = mainWizard.getSpellFromName(name);
 
-			}else if(Objects.equals(input, "remove")){
-				print("What spell would you like to remove?");
+                if(Objects.equals(spell.getName(),"error")){
+                    print("This spell is not on your list");
+                }else{
 
-				String spellName = scanner.nextLine();
+                    print(spell.getName() + " is in your database and has a damage of " + spell.getDamage());
+                }
 
-				Spell spell = mainWizard.getSpellFromName(spellName);
+                waitForEnter();
+                clearScreen();
+            }else if(Objects.equals(input, "attack")){
+                LinkedList<Spell> spellList = mainWizard.getSpellList();
 
-				mainWizard.removeSpellFromList(spell);
+                clearScreen();
 
-				print("Removed " + spell.getName() + " from your book");
+                print("Here is a list of your prepared spells:");
 
-				mainWizard.saveWizardToFile(mainWizard);
+                for(Spell spell : spellList){
+                    if(spell.getPrepared() == true){
+                        System.out.println(spell.getName());
+                    }
+                }
 
-				waitForEnter();
-				clearScreen();
-			}else if(Objects.equals(input, "book")){
-				LinkedList<Spell> spellList = mainWizard.getSpellList();
+            }else if(Objects.equals(input, "remove")){
+                print("What spell would you like to remove?");
 
-				clearScreen();
+                String spellName = scanner.nextLine();
 
-				print("Here are all your spells");
+                Spell spell = mainWizard.getSpellFromName(spellName);
 
-				for(Spell spell : spellList){
-					System.out.println(spell.getName() + "\nDamage: " + spell.getDamage() + " Prepared: " + spell.getPrepared());
-				}
-			}else if(Objects.equals(input, "rest")){
-				LinkedList<Spell> spellList = mainWizard.getSpellList();
+                mainWizard.removeSpellFromList(spell);
 
-				clearScreen();
+                print("Removed " + spell.getName() + " from your book");
 
-				for(Spell spell : spellList){
-					if(spell.getPrepared() == true){
-						spell.setPrepared(false);
-					}
-				}
+                mainWizard.saveWizardToFile(mainWizard);
 
-				print("You have rested and your health has been reset");
+                waitForEnter();
+                clearScreen();
+            }else if(Objects.equals(input, "book")){
+                LinkedList<Spell> spellList = mainWizard.getSpellList();
 
-				mainWizard.saveWizardToFile(mainWizard);
+                clearScreen();
 
-				waitForEnter();
-				clearScreen();
-			}
+                print("Here are all your spells");
 
-		}
-}
+                for(Spell spell : spellList){
+                    System.out.println(spell.getName() + "\nDamage: " + spell.getDamage() + " Prepared: " + spell.getPrepared());
+                }
+            }else if(Objects.equals(input, "rest")){
+                LinkedList<Spell> spellList = mainWizard.getSpellList();
 
-	public static void print(String string){
-		System.out.println(string);
-	}
+                clearScreen();
 
-	public static void clearScreen(){
-		System.out.print("\033\143");
-	}
+                for(Spell spell : spellList){
+                    if(spell.getPrepared() == true){
+                        spell.setPrepared(false);
+                    }
+                }
 
-	public static void waitForEnter(){
-		Scanner scanner = new Scanner(System.in);
+                print("You have rested and your health has been reset");
 
-		print("Press enter to continue");
+                mainWizard.saveWizardToFile(mainWizard);
 
-		scanner.nextLine();
-	}
+                waitForEnter();
+                clearScreen();
+            }
 
-	public static Wizard readFromSave(){
-		ObjectMapper objectMapper = new ObjectMapper();
+        }
+    }
 
-		Wizard wizard = new Wizard();
+    public static void print(String string){
+        System.out.println(string);
+    }
 
-		try{
-			wizard = objectMapper.readValue(new File("src/main/resources/wizard.json"), Wizard.class);
-		}catch( Exception e){
-			print("You have no previous save");
-		}
-		return wizard;
-	}
+    public static void clearScreen(){
+        System.out.print("\033\143");
+    }
+
+    public static void waitForEnter(){
+        Scanner scanner = new Scanner(System.in);
+
+        print("Press enter to continue");
+
+        scanner.nextLine();
+    }
+
+    public static Wizard readFromSave(){
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        Wizard wizard = new Wizard();
+
+        try{
+            wizard = objectMapper.readValue(new File("src/main/resources/wizard.json"), Wizard.class);
+        }catch( Exception e){
+            print("You have no previous save");
+        }
+        return wizard;
+    }
 }
