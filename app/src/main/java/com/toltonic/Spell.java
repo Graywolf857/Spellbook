@@ -24,7 +24,8 @@ public class Spell{
 //	METHODS
 
 	public int castSpell(){
-		this.used = true;
+        this.used = true;
+        this.prepared = false;
 		return damage;
 	}
 

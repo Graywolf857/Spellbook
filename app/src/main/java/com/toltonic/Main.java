@@ -221,6 +221,21 @@ public class Main{
 
                 waitForEnter();
                 clearScreen();
+            }else if(Objects.equals(input, "cast")){
+                print("What spell would you like to cast?");
+
+                String name = scanner.nextLine();
+
+                Spell spell = mainWizard.getSpellFromName(name);
+
+                spell.castSpell();
+
+                System.out.println("Casted " + spell.getName() + " dealing: " + spell.getDamage());
+
+                mainWizard.saveWizardToFile(mainWizard);
+
+                waitForEnter();
+                clearScreen();
             }
 
         }
