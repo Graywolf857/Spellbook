@@ -33,6 +33,8 @@ public class Main{
 
             mainWizard = readFromSave();
 
+            System.out.println(mainWizard.getName() + " lvl: " + mainWizard.getLevel());
+
             print("What would you like to do? (Type 'help' to see options, and 'q' to quit.)");
 
             String input = scanner.next();
@@ -104,29 +106,6 @@ public class Main{
 
                 waitForEnter();
                 clearScreen();
-            }else if(Objects.equals(input, "test")){
-                Wizard wizard = new Wizard();
-
-                Spell magicMissile = new Spell();
-
-                magicMissile.setName("Magic Missile");
-
-                print(magicMissile.getName());
-
-                wizard.addSpellToList(magicMissile);
-
-                LinkedList<Spell> spellList = wizard.getSpellList();
-
-                Spell spell = spellList.get(0);
-
-                print(spell.getName());
-
-                String spellRequestName = scanner.nextLine();
-
-                Spell lit = wizard.getSpellFromName(spellRequestName);
-
-                print(lit.getName());
-
             }else if(Objects.equals(input, "add")){
 
                 boolean preped = true;
@@ -222,6 +201,21 @@ public class Main{
                 }
 
                 print("You have rested and your health has been reset");
+
+                mainWizard.saveWizardToFile(mainWizard);
+
+                waitForEnter();
+                clearScreen();
+            }else if(Objects.equals(input, "prepare")){
+                print("What spell would you like to prepare?");
+
+                String name = scanner.nextLine();
+
+                Spell spell = mainWizard.getSpellFromName(name);
+
+                spell.setPrepared(true);
+
+                print(spell.getName() + " is now prepared!");
 
                 mainWizard.saveWizardToFile(mainWizard);
 
